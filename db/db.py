@@ -39,3 +39,39 @@ def creation():
 
 if __name__ == '__main__':
 	creation()
+
+def getParticipants(eventid):
+	try:
+	    con = mdb.connect(utl.host,utl.dbuser, utl.dbpass, utl.dbname);
+	    cur = con.cursor(mdb.cursors.DictCursor)
+	except mdb.Error, e:
+	    print "Error %d: %s" % (e.args[0],e.args[1])
+	    sys.exit(1)
+
+	#select userid from participants_tbl where eventid = [id of event]
+	query_str = ("select %s from %s where %s = \'%s\'")%(utl.participant_userid, utl.table_participant, utl.participant_eventid, eventid)
+	print query_str
+	cur.execute(query_str)
+	results = []
+	for row in cur:
+		results.append(row)
+		
+	return results
+
+def getSchedules(eventid):
+	try:
+	    con = mdb.connect(utl.host,utl.dbuser, utl.dbpass, utl.dbname);
+	    cur = con.cursor(mdb.cursors.DictCursor)
+	except mdb.Error, e:
+	    print "Error %d: %s" % (e.args[0],e.args[1])
+	    sys.exit(1)
+
+	#select start_time, end_time, userid, event_id from event_tbl where userid in [list of userid's]
+	query_str = ("select %s from %s where %s = \'%s\'")%(utl.participant_userid, utl.table_participant, utl.participant_eventid, eventid)
+	print query_str
+	cur.execute(query_str)
+	results = []
+	for row in cur:
+		results.append(row)
+		
+	return results
